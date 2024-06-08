@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: user-service
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/wafa
+    username: root
+    password: 8618609838
+    driver-class-name: com.mysql.cj.jdbc.Driver 
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+
+  main:
+    allow-bean-definition-overriding: true
