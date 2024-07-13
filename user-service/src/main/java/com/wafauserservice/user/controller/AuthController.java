@@ -68,7 +68,7 @@ public class AuthController {
         Long phone = null;
 
         if (role == ROLE.WAFA_USER) {
-            username = user.getCardNumber();
+            username = user.getUsername();
             password = user.getPassword();
             name = user.getName();
             phone = user.getPhoneNo();
@@ -117,7 +117,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> loginUserHandler(@RequestBody LoginRequest loginRequest) throws WafaUserException {
-        return loginHandler(loginRequest.getCardNumber(), loginRequest.getPassword());
+        return loginHandler(loginRequest.getUsername(), loginRequest.getPassword());
     }
 
     @PostMapping("/login-admin")
@@ -148,7 +148,7 @@ public class AuthController {
             throw new BadCredentialsException("Invalid username or password");
         }
 
-        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
     }
 
     private ResponseEntity<AuthResponse> createAuthResponse(String username, String message, HttpStatus status) {

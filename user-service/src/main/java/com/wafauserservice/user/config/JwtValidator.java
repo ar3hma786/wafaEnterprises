@@ -29,11 +29,10 @@ public class JwtValidator extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        String jwt = request.getHeader(JwtConstant.JWT_HEADER);
-
-        if (jwt != null && jwt.startsWith("Bearer ")) {
-            jwt = jwt.substring(7);
-
+        String requestTokenHeader = request.getHeader(JwtConstant.JWT_HEADER);
+        String jwt= null;
+        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
+        	jwt = requestTokenHeader.substring("Bearer ".length());
             try {
                 Claims claims = Jwts.parserBuilder()
                         .setSigningKey(key)

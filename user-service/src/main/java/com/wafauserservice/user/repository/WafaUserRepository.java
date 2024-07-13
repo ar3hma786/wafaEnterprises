@@ -3,23 +3,28 @@ package com.wafauserservice.user.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.wafauserservice.user.domain.ROLE;
 import com.wafauserservice.user.model.WafaUser;
 
+import jakarta.transaction.Transactional;
+
 public interface WafaUserRepository extends JpaRepository<WafaUser, Long> {
 
     WafaUser findByUsername(String username);
-
+    
+    @Transactional
+    @Modifying
     @Query("DELETE FROM WafaUser u WHERE u.cardNumber = :cardNumber AND u.role != :admin AND u.role != :superAdmin")
     void deleteByCardNumber(@Param("cardNumber") String cardNumber, @Param("admin") ROLE admin, @Param("superAdmin") ROLE superAdmin);
 
     WafaUser findByCardNumber(String cardNumber);
 
     @Query("SELECT u FROM WafaUser u WHERE u.role = :role AND " +
-           "(u.cardNumber = :cardNumber OR u.city = :city OR u.careOff1 = :careOff1 OR u.careOff2 = :careOff2 OR STR(u.phoneNo) LIKE %:phoneNo%)")
+           "(u.cardNumber = :cardNumber AND u.city = :city AND u.careOff1 = :careOff1 AND u.careOff2 = :careOff2 AND STR(u.phoneNo) LIKE %:phoneNo%)")
     WafaUser searchByQuery(@Param("role") ROLE role,
                            @Param("cardNumber") String cardNumber,
                            @Param("city") String city,

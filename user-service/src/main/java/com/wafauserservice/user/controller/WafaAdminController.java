@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,7 +29,7 @@ public class WafaAdminController {
     
     @GetMapping("/get-all-users")
     public ResponseEntity<List<WafaUser>> getAllUsers(@RequestHeader("Authorization") String jwt) {
-   
+    	jwt = jwt.substring("Bearer ".length());
         WafaUser adminUser = wafaAdminService.findAdminFromJwt(jwt);
         if (adminUser == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -40,7 +42,7 @@ public class WafaAdminController {
     
     @GetMapping("/cardNumber/{cardNumber}")
     public ResponseEntity<WafaUser> findByCardNumber(@PathVariable String cardNumber, @RequestHeader("Authorization") String jwt) throws WafaAdminException, WafaUserException {
-
+    	jwt = jwt.substring("Bearer ".length());
         WafaUser adminUser = wafaAdminService.findAdminFromJwt(jwt);
         if (adminUser == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -53,7 +55,8 @@ public class WafaAdminController {
     @GetMapping("/delete/{cardNumber}")
     public ResponseEntity<String> deleteByCardNumber(@PathVariable String cardNumber, @RequestHeader("Authorization") String jwt) throws WafaAdminException, WafaUserException {
     	
-        WafaUser adminUser = wafaAdminService.findAdminFromJwt(jwt);
+    	jwt = jwt.substring("Bearer ".length());
+    	WafaUser adminUser = wafaAdminService.findAdminFromJwt(jwt);
         if (adminUser == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -62,10 +65,11 @@ public class WafaAdminController {
         return new ResponseEntity<>("User deleted successfully", HttpStatus.OK);
     }
     
-    @GetMapping("/update")
-    public ResponseEntity<WafaUser> updateUser(WafaUser wafaUser, @RequestHeader("Authorization") String jwt) throws WafaAdminException, WafaUserException {
+    @PostMapping("/update")
+    public ResponseEntity<WafaUser> updateUser(@RequestBody WafaUser wafaUser, @RequestHeader("Authorization") String jwt) throws WafaAdminException, WafaUserException {
     	
-        WafaUser adminUser = wafaAdminService.findAdminFromJwt(jwt);
+    	jwt = jwt.substring("Bearer ".length());
+    	WafaUser adminUser = wafaAdminService.findAdminFromJwt(jwt);
         if (adminUser == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -77,7 +81,8 @@ public class WafaAdminController {
     @GetMapping("/search")
     public ResponseEntity<WafaUser> searchUserByQuery(String cardNumber, String city, String careOff, String careOff2, Long phoneNumber, @RequestHeader("Authorization") String jwt) throws WafaAdminException {
   
-        WafaUser adminUser = wafaAdminService.findAdminFromJwt(jwt);
+    	jwt = jwt.substring("Bearer ".length());
+    	WafaUser adminUser = wafaAdminService.findAdminFromJwt(jwt);
         if (adminUser == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }

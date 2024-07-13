@@ -39,7 +39,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		
 		List<GrantedAuthority> authorities = new ArrayList<>();
 		
-		authorities.add(new SimpleGrantedAuthority(role.toString()));
+		authorities.add(new SimpleGrantedAuthority("ROLE_" + role.name()));
 		
         return new org.springframework.security.core.userdetails.User(wafaUser.getUsername(), wafaUser.getPassword(), authorities);
 		

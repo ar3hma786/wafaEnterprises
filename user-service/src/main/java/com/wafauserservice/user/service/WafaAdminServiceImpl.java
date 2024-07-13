@@ -101,8 +101,7 @@ public class WafaAdminServiceImpl implements WafaAdminService{
 	@Override
 	public WafaUser findAdminFromJwt(String jwt) {
 	    String username = jwtProvider.getUsernameFromJwt(jwt);
-	    WafaUser findUser = wafaUserRepository.findByUsernameAndRole(username, ROLE.WAFA_ADMIN);
-	    return findUser;
+	    return wafaUserRepository.findByUsernameAndRole(username, ROLE.WAFA_ADMIN);
 	}
 
 }

@@ -22,11 +22,12 @@ public class WafaUserController {
     
     @GetMapping("/welcome/{cardNumber}")
     public ResponseEntity<WafaUser> findByCardNumber(@PathVariable("cardNumber") String cardNumber, @RequestHeader("Authorization") String jwt) throws WafaUserException {
-        WafaUser wafaUser = wafaUserService.findUserFromJwt(jwt);
+    	jwt = jwt.substring("Bearer ".length());
+    	WafaUser wafaUser = wafaUserService.findUserFromJwt(jwt);
+        
         if (wafaUser == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        
         WafaUser getUser = wafaUserService.findByCardNumber(cardNumber);
         if (getUser != null) {
             return ResponseEntity.ok(getUser);
