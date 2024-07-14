@@ -21,6 +21,7 @@ public class WafaSuperAdminController {
 
     @GetMapping("/admins")
     public ResponseEntity<List<WafaUser>> getAllAdmins(@RequestHeader("Authorization") String jwt) {
+    	jwt = jwt.substring("Bearer ".length());
         WafaUser superAdminUser = wafaSuperAdminService.findSuperAdminFromJwt(jwt);
         if (superAdminUser == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -31,7 +32,8 @@ public class WafaSuperAdminController {
 
     @GetMapping("/admin/{username}")
     public ResponseEntity<WafaUser> findAdminByUsername(@PathVariable String username, @RequestHeader("Authorization") String jwt) {
-        WafaUser superAdminUser = wafaSuperAdminService.findSuperAdminFromJwt(jwt);
+    	jwt = jwt.substring("Bearer ".length());
+    	WafaUser superAdminUser = wafaSuperAdminService.findSuperAdminFromJwt(jwt);
         if (superAdminUser == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -45,13 +47,14 @@ public class WafaSuperAdminController {
 
     @DeleteMapping("/admin/{username}")
     public ResponseEntity<Void> deleteAdminByUsername(@PathVariable String username, @RequestHeader("Authorization") String jwt) {
-        WafaUser superAdminUser = wafaSuperAdminService.findSuperAdminFromJwt(jwt);
+    	jwt = jwt.substring("Bearer ".length());
+    	WafaUser superAdminUser = wafaSuperAdminService.findSuperAdminFromJwt(jwt);
         if (superAdminUser == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         try {
             wafaSuperAdminService.deleteAdminByUsername(username);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (WafaAdminException | WafaSuperAdminException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -59,7 +62,8 @@ public class WafaSuperAdminController {
 
     @PutMapping("/admin")
     public ResponseEntity<WafaUser> updateAdmin(@RequestBody WafaUser wafaUser, @RequestHeader("Authorization") String jwt) {
-        WafaUser superAdminUser = wafaSuperAdminService.findSuperAdminFromJwt(jwt);
+    	jwt = jwt.substring("Bearer ".length());
+    	WafaUser superAdminUser = wafaSuperAdminService.findSuperAdminFromJwt(jwt);
         if (superAdminUser == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -73,7 +77,8 @@ public class WafaSuperAdminController {
 
     @GetMapping("/search")
     public ResponseEntity<WafaUser> searchAdminUserByQuery(@RequestParam String query, @RequestHeader("Authorization") String jwt) {
-        WafaUser superAdminUser = wafaSuperAdminService.findSuperAdminFromJwt(jwt);
+    	jwt = jwt.substring("Bearer ".length());
+    	WafaUser superAdminUser = wafaSuperAdminService.findSuperAdminFromJwt(jwt);
         if (superAdminUser == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -87,13 +92,14 @@ public class WafaSuperAdminController {
 
     @DeleteMapping("/superadmin/{username}")
     public ResponseEntity<Void> deleteSuperAdmin(@PathVariable String username, @RequestHeader("Authorization") String jwt) {
-        WafaUser superAdminUser = wafaSuperAdminService.findSuperAdminFromJwt(jwt);
+    	jwt = jwt.substring("Bearer ".length());
+    	WafaUser superAdminUser = wafaSuperAdminService.findSuperAdminFromJwt(jwt);
         if (superAdminUser == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         try {
             wafaSuperAdminService.deleteSuperAdmin(username);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (WafaSuperAdminException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
